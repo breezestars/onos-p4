@@ -1,0 +1,77 @@
+#!/bin/bash
+
+PWD_DOCKER=`which docker`
+ONOS_P4_IMAGE=${P4APP_IMAGE:-breezestars/onos-p4:latest}
+
+if [[ -z $PWD_DOCKER ]]; then
+  echo "There is no Docker in this environment, please install Docker first."
+  echo "Suggest install Docker throught exectue 'curl -sSL https://get.docker.io | bash'"
+  exit -1
+fi
+
+
+function run-command {
+  NAME="onos-p4-$RANDOM"
+  docker run --privileged -tid \
+            --name $NAME \
+             $ONOS_P4_IMAGE
+  echo "You could connect to container by exectute './onos-p4 exec bash'"
+}
+
+function exec-command {
+  container_id=$(docker ps | grep -m1 onos-p4 | awk '{print $1}')
+
+  if [ -z "$container_id" ]; then
+      (>&2 echo "Couldn't find any onos-p4 container currently running.")
+      exit 1
+  fi
+
+  if [ -t 1 ]; then
+      # Called from a terminal, be interactive
+      docker exec -it $container_id ${@:1}
+  else
+      # Inside a pipe, don't allocate a ptty
+      docker exec $container_id ${@:1}
+  fi
+}
+
+function destroy-command {
+  container_id=$(docker ps | grep -m1 onos-p4 | awk '{print $1}')
+
+  if [ -z "$container_id" ]; then
+      (>&2 echo "Couldn't find any onos-p4 container currently running.")
+      exit 1
+  fi
+
+  docker rm -f $container_id
+}
+
+
+function usage-command {
+  echo "Usage:"
+  echo "  onos-p4 run"
+  echo "      Run a onos-p4 instance."
+  echo "  onos-p4 destroy"
+  echo "      Destroy onos-p4 instance"
+  echo "  onos-p4 exec <command>"
+  echo "      Execute a command on the most recent onos-p4 instance."
+  exit 1
+}
+
+
+case "$1" in
+  "run")
+    run-command "${@:2}"
+    ;;
+  "exec")
+    exec-command "${@:2}"
+    ;;
+  "destroy")
+    destroy-command
+    ;;
+  *)
+    usage-command
+    ;;
+esac
+
+
