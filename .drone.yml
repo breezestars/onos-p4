@@ -1,5 +1,6 @@
 pipeline:
   build:
     image: docker:dind
+    privileged: true
     commands:
       - docker build -t onos-p4 .
