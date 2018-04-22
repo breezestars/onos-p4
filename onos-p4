@@ -6,9 +6,8 @@ ONOS_P4_IMAGE=${P4APP_IMAGE:-breezestars/onos-p4:latest}
 if [[ -z $PWD_DOCKER ]]; then
   echo "There is no Docker in this environment, please install Docker first."
   echo "Suggest install Docker throught exectue 'curl -sSL https://get.docker.io | bash'"
-  exit -1
+  exit 1
 fi
-
 
 function run-command {
   NAME="onos-p4-$RANDOM"
