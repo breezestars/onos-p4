@@ -1,0 +1,5 @@
+pipeline:
+  build:
+    image: docker:dind
+    commands:
+      - docker build -t onos-p4
