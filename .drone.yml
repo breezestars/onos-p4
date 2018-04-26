@@ -5,4 +5,5 @@ pipeline:
     commands:
       - docker build -t onos-p4 .
     volumes:
-      - /var/run/docker.sock:/var/run/host.sock:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+
