@@ -18,6 +18,9 @@ RUN apt-get update && \
   apt-get install -y --no-install-recommends oracle-java8-installer oracle-java8-set-default && \
   apt-get clean all && \
   rm -rf /var/lib/apt/lists/* && \
+  rm -r /PI && \
+  rm -r /behavioral-model && \
+  rm -r /p4c && \
   git clone https://github.com/opennetworkinglab/onos.git && \
   echo 'source $ONOS_ROOT/tools/dev/bash_profile' >> /root/.bashrc && \
   echo 'export ONOS_APPS=drivers.bmv2,proxyarp,lldpprovider,hostprovider,fwd' >> /root/.bashrc
