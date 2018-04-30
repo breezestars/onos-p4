@@ -1,3 +1,5 @@
+[![Build Status](https://drone.cmou.io/api/badges/breezestars/onos-p4/status.svg?branch=master)](https://drone.cmou.io/api/badges/breezestars/onos-p4/status.svg?branch=master)
+
 # onos-p4
 Easy to create an environment to develop P4 script and ONOS
 
