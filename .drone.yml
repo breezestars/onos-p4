@@ -3,7 +3,19 @@ pipeline:
     image: docker:dind
     privileged: true
     commands:
-      - docker build -t onos-p4 .
+      - docker build -t onos-p4:test .
+      - docker run --privileged -tid --name onos-p4-test onos-p4:test
+      - docker exec onos-p4-test uname -a
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+
+  clean:
+    image: docker:dind
+    privileged: true
+    commands:
+      - docker rm -f onos-p4-test
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    when:
+      status: [failure, success]
 
