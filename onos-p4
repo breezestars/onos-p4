@@ -46,6 +46,16 @@ function destroy-command {
 }
 
 
+function status-command {
+  container_id=$(docker ps | grep -m1 onos-p4 | awk '{print $1}')
+
+  if [ -z "$container_id" ]; then
+    echo "No onos-p4 container running"
+  else
+    echo "You have onos-p4 container running"
+  fi
+}
+
 function usage-command {
   echo "Usage:"
   echo "  onos-p4 run"
@@ -54,6 +64,8 @@ function usage-command {
   echo "      Destroy onos-p4 instance"
   echo "  onos-p4 exec <command>"
   echo "      Execute a command on the most recent onos-p4 instance."
+  echo "  onos-p4 status"
+  echo "      Show the onos-p4 container status"
   exit 1
 }
 
@@ -67,6 +79,9 @@ case "$1" in
     ;;
   "destroy")
     destroy-command
+    ;;
+  "status")
+    status-command
     ;;
   *)
     usage-command
